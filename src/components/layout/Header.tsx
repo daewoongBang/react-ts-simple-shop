@@ -4,19 +4,19 @@ import { RiAdminFill } from 'react-icons/ri';
 
 const Header = () => {
   return (
-    <header>
-      <Link to={'/'}>
+    <header className='flex justify-between border-b border-gray-300 p-2'>
+      <Link to={'/'} className='flex items-center text-4xl text-brand'>
         <FiShoppingBag />
         <h1>Logo</h1>
       </Link>
 
-      <nav>
+      <nav className='flex items-center gap-4 font-semibold'>
         <Link to={'/products'}>Products</Link>
         <Link to={'/Cart'}>Cart</Link>
-        <Link to={'/admin/upload'}>
+        <Link to={'/login'}>Login</Link>
+        <Link to={'/admin/upload'} className='text-2xl'>
           <RiAdminFill />
         </Link>
-        <Link to={'/login'}>Login</Link>
       </nav>
     </header>
   );
