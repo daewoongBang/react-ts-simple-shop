@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FiShoppingBag } from 'react-icons/fi';
 import { RiAdminFill } from 'react-icons/ri';
+import { login } from 'apis/firebase';
 
 const Header = () => {
   return (
@@ -13,7 +14,7 @@ const Header = () => {
       <nav className='flex items-center gap-4 font-semibold'>
         <Link to={'/products'}>Products</Link>
         <Link to={'/Cart'}>Cart</Link>
-        <Link to={'/login'}>Login</Link>
+        <button onClick={() => login()}>Login</button>
         <Link to={'/admin/upload'} className='text-2xl'>
           <RiAdminFill />
         </Link>
