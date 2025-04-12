@@ -8,6 +8,7 @@ import MyCart from 'pages/MyCart';
 import Login from 'pages/user/Login';
 import AdminProductUpload from 'pages/admin/product-upload';
 import NotFound from 'pages/error/NotFound';
+import ProtectedRoute from './ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -18,9 +19,23 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'products', element: <ProductList /> },
       { path: 'products/:id', element: <ProductDetail /> },
-      { path: 'cart', element: <MyCart /> },
+      {
+        path: 'cart',
+        element: (
+          <ProtectedRoute>
+            <MyCart />
+          </ProtectedRoute>
+        ),
+      },
       { path: 'login', element: <Login /> },
-      { path: 'admin/upload', element: <AdminProductUpload /> },
+      {
+        path: 'admin/upload',
+        element: (
+          <ProtectedRoute>
+            <AdminProductUpload />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
