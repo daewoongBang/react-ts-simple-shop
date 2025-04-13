@@ -14,19 +14,23 @@ interface Product {
   options: string;
 }
 
+const productInitialState: Product = {
+  title: '',
+  price: 0,
+  category: '',
+  description: '',
+  options: '',
+};
+
 const AdminProductUpload = () => {
-  const [product, setProduct] = useState<Product>({
-    title: '',
-    price: 0,
-    category: '',
-    description: '',
-    options: '',
-  });
+  const [product, setProduct] = useState<Product>(productInitialState);
   const [image, setImage] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
-    console.log(files);
+
     if (name === 'image' && files) {
       setImage(files[0]);
     } else {
@@ -37,19 +41,42 @@ const AdminProductUpload = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsUploading(true);
+
     if (image) {
-      uploadImage(image).then((url) => {
-        createProduct(product, url);
-      });
+      uploadImage(image)
+        .then((url) => {
+          createProduct(product, url).then(() => {
+            setSuccessMessage('제품이 성공적으로 등록되었습니다.');
+            setTimeout(() => {
+              setSuccessMessage('');
+              setProduct(productInitialState);
+            }, 3000);
+          });
+        })
+        .finally(() => {
+          setIsUploading(false);
+        });
     }
   };
 
   return (
-    <section className='flex flex-col gap-4 max-w-2xl mx-auto'>
-      <h1 className='text-2xl font-bold'>새로운 제품 등록</h1>
-      {image && <img src={URL.createObjectURL(image)} alt='product-image' />}
+    <section className='w-full text-center'>
+      <h2 className='text-2xl font-bold my-4'>새로운 제품 등록</h2>
 
-      <form onSubmit={handleSubmit}>
+      {successMessage && (
+        <p className='my-2 text-green-600'>{successMessage}</p>
+      )}
+
+      {image && (
+        <img
+          className='w-96 mx-auto mb-2'
+          src={URL.createObjectURL(image)}
+          alt='product-image'
+        />
+      )}
+
+      <form className='flex flex-col px-12' onSubmit={handleSubmit}>
         <input
           type='file'
           name='image'
@@ -97,7 +124,9 @@ const AdminProductUpload = () => {
           required
           value={product.options || ''}
         />
-        <Button type='submit'>등록</Button>
+        <Button type='submit' disabled={isUploading}>
+          {isUploading ? '업로드 중...' : '등록'}
+        </Button>
       </form>
     </section>
   );

@@ -65,7 +65,8 @@ async function checkAdmin(user: User) {
 
 export async function createProduct(product: any, imageUrl: string) {
   const id = uuid();
-  set(ref(database, `products/${id}`), {
+
+  return set(ref(database, `products/${id}`), {
     ...product,
     id,
     price: parseInt(product.price),
