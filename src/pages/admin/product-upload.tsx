@@ -4,6 +4,7 @@ import Input from 'components/common/Input';
 import Button from 'components/common/Button';
 
 import { uploadImage } from 'apis/uploader';
+import { createProduct } from 'apis/firebase';
 
 interface Product {
   title: string;
@@ -38,7 +39,7 @@ const AdminProductUpload = () => {
 
     if (image) {
       uploadImage(image).then((url) => {
-        console.log(url);
+        createProduct(product, url);
       });
     }
   };
