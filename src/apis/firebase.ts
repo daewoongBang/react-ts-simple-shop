@@ -10,6 +10,8 @@ import {
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
+import { Product } from 'types/product';
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -72,5 +74,11 @@ export async function createProduct(product: any, imageUrl: string) {
     price: parseInt(product.price),
     image: imageUrl,
     options: product.options.split(','),
+  });
+}
+
+export async function getProducts(): Promise<Product[]> {
+  return get(ref(database, 'products')).then((snapshot) => {
+    return snapshot.exists() ? Object.values(snapshot.val()) : [];
   });
 }
