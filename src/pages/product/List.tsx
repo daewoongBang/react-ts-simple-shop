@@ -1,5 +1,7 @@
-const ProductList = () => {
-  return <div>Product List</div>;
+import ProductList from 'components/product/List';
+
+const ProductListPage = () => {
+  return <ProductList />;
 };
 
-export default ProductList;
+export default ProductListPage;
