@@ -82,3 +82,9 @@ export async function getProducts(): Promise<Product[]> {
     return snapshot.exists() ? Object.values(snapshot.val()) : [];
   });
 }
+
+export async function getProduct(id: string): Promise<Product> {
+  return get(ref(database, `products/${id}`)).then((snapshot) => {
+    return snapshot.val();
+  });
+}
