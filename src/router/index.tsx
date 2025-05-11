@@ -4,7 +4,7 @@ import MainLayout from 'layout/MainLayout';
 import Home from 'pages/Home';
 import ProductList from 'pages/product/List';
 import ProductDetail from 'pages/product/Detail';
-import MyCart from 'pages/MyCart';
+import MyCart from 'pages/user/MyCart';
 import Login from 'pages/user/Login';
 import AdminProductUpload from 'pages/admin/product-upload';
 import NotFound from 'pages/error/NotFound';

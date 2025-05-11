@@ -4,7 +4,7 @@ import { RiAdminFill } from 'react-icons/ri';
 
 import UserProfile from 'components/user/UserProfile';
 import Button from 'components/common/Button';
-
+import CartStatus from 'components/user/CartStatus';
 import { useAuth } from 'context/AuthContext';
 
 const Header = () => {
@@ -19,7 +19,11 @@ const Header = () => {
 
       <nav className='flex items-center gap-4 font-semibold'>
         <Link to={'/products'}>Products</Link>
-        {user && <Link to={'/cart'}>Cart</Link>}
+        {user && (
+          <Link to={'/cart'}>
+            <CartStatus />
+          </Link>
+        )}
 
         {user && user.isAdmin && (
           <Link to={'/admin/upload'} className='text-2xl'>

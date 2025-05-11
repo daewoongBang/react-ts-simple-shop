@@ -7,3 +7,12 @@ export interface Product {
   options: string[];
   description: string;
 }
+
+export interface CartItem {
+  id: string;
+  image: string;
+  title: string;
+  price: number;
+  selectedOption: string;
+  quantity: number;
+}

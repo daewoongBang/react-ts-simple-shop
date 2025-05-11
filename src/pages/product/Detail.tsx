@@ -3,12 +3,15 @@ import { useLocation } from 'react-router-dom';
 import Button from 'components/common/Button';
 import Select from 'components/common/Select';
 import { formatPrice } from 'util/format';
-import { Product } from 'types/product';
+import { Product, CartItem } from 'types/product';
+import { useAuth } from 'context/AuthContext';
+import { addCart } from 'apis/firebase';
 
 const ProductDetail = () => {
   const {
-    product: { image, title, price, category, description, options },
+    product: { id, image, title, price, category, description, options },
   } = useLocation().state as { product: Product };
+  const { user } = useAuth();
 
   const [selectedOption, setSelectedOption] = useState(
     options ? options?.[0] : ''
@@ -18,7 +21,21 @@ const ProductDetail = () => {
     setSelectedOption(e.target.value);
 
   const handleAddCart = () => {
-    console.log(selectedOption);
+    if (!user) {
+      alert('로그인 후 이용해주세요.');
+      return;
+    } else {
+      const cartItem: CartItem = {
+        id,
+        image,
+        title,
+        price,
+        selectedOption,
+        quantity: 1,
+      };
+
+      addCart(user.uid, cartItem);
+    }
   };
 
   return (

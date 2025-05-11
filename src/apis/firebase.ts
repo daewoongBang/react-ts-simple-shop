@@ -7,10 +7,10 @@ import {
   onAuthStateChanged,
   User,
 } from 'firebase/auth';
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { getDatabase, ref, get, set, remove } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
-import { Product } from 'types/product';
+import { Product, CartItem } from 'types/product';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -87,4 +87,26 @@ export async function getProduct(id: string): Promise<Product> {
   return get(ref(database, `products/${id}`)).then((snapshot) => {
     return snapshot.val();
   });
+}
+
+export async function getCart(userId: string) {
+  return !!userId
+    ? get(ref(database, `carts/${userId}`)).then((snapshot) => {
+        const items = snapshot.val() || {};
+
+        return Object.values(items);
+      })
+    : [];
+}
+
+export async function addCart(userId: string, cart: CartItem) {
+  return set(ref(database, `carts/${userId}/${cart.id}`), cart);
+}
+
+export async function updateCart(userId: string, cart: CartItem) {
+  return set(ref(database, `carts/${userId}/${cart.id}`), cart);
+}
+
+export async function removeCart(userId: string, cartId: string) {
+  return remove(ref(database, `carts/${userId}/${cartId}`));
 }
