@@ -10,7 +10,7 @@ import {
 import { getDatabase, ref, get, set, remove } from 'firebase/database';
 import { v4 as uuid } from 'uuid';
 
-import { Product, CartItem } from 'types/product';
+import { Product, ICartItem } from 'types/product';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -89,7 +89,7 @@ export async function getProduct(id: string): Promise<Product> {
   });
 }
 
-export async function getCart(userId: string) {
+export async function getCart(userId: string): Promise<ICartItem[]> {
   return !!userId
     ? get(ref(database, `carts/${userId}`)).then((snapshot) => {
         const items = snapshot.val() || {};
@@ -99,14 +99,14 @@ export async function getCart(userId: string) {
     : [];
 }
 
-export async function addCart(userId: string, cart: CartItem) {
+export async function addCart(userId: string, cart: ICartItem) {
   return set(ref(database, `carts/${userId}/${cart.id}`), cart);
 }
 
-export async function updateCart(userId: string, cart: CartItem) {
+export async function updateCart(userId: string, cart: ICartItem) {
   return set(ref(database, `carts/${userId}/${cart.id}`), cart);
 }
 
-export async function removeCart(userId: string, cartId: string) {
+export async function deleteCartItem(userId: string, cartId: string) {
   return remove(ref(database, `carts/${userId}/${cartId}`));
 }

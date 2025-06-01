@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Button from 'components/common/Button';
 import Select from 'components/common/Select';
 import { formatPrice } from 'util/format';
-import { Product, CartItem } from 'types/product';
+import { Product, ICartItem } from 'types/product';
 import { useAuth } from 'context/AuthContext';
 import { addCart } from 'apis/firebase';
 
@@ -25,7 +25,7 @@ const ProductDetail = () => {
       alert('로그인 후 이용해주세요.');
       return;
     } else {
-      const cartItem: CartItem = {
+      const cartItem: ICartItem = {
         id,
         image,
         title,

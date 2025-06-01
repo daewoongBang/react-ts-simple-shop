@@ -8,7 +8,7 @@ export interface Product {
   description: string;
 }
 
-export interface CartItem {
+export interface ICartItem {
   id: string;
   image: string;
   title: string;
