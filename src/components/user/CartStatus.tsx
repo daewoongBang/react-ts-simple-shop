@@ -1,14 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getCart } from 'apis/firebase';
 import { IoCartOutline } from 'react-icons/io5';
-import { useAuth } from 'context/AuthContext';
-const CartStatus = () => {
-  const { user } = useAuth();
+import { useCart } from 'hooks/useCart';
 
-  const { data: cartItems } = useQuery({
-    queryKey: ['carts'],
-    queryFn: () => getCart(user?.uid || ''),
-  });
+const CartStatus = () => {
+  const {
+    cartQuery: { data: cartItems },
+  } = useCart();
 
   return (
     <div className='relative'>

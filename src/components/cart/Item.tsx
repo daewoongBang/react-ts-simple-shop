@@ -1,7 +1,7 @@
 import { ICartItem } from 'types/product';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { updateCart, deleteCartItem } from 'apis/firebase';
+import { useCart } from 'hooks/useCart';
 
 interface CartItemProps {
   item: ICartItem;
@@ -12,17 +12,19 @@ const ICON_CLASS =
   'cursor-pointer transition-all hover:text-brand hover:scale-110 mx-1';
 
 const CartItem = ({ item, uid }: CartItemProps) => {
+  const { addOrUpdateCartItem, deleteCartItem } = useCart();
+
   const handleClickMinus = () => {
     if (item.quantity < 2) return;
-    updateCart(uid, { ...item, quantity: item.quantity - 1 });
+    addOrUpdateCartItem.mutate({ ...item, quantity: item.quantity - 1 });
   };
 
   const handleClickPlus = () => {
-    updateCart(uid, { ...item, quantity: item.quantity + 1 });
+    addOrUpdateCartItem.mutate({ ...item, quantity: item.quantity + 1 });
   };
 
   const handleClickDelete = () => {
-    deleteCartItem(uid, item.id);
+    deleteCartItem.mutate(item.id);
   };
 
   return (

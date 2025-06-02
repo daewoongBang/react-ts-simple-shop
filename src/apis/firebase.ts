@@ -99,14 +99,10 @@ export async function getCart(userId: string): Promise<ICartItem[]> {
     : [];
 }
 
-export async function addCart(userId: string, cart: ICartItem) {
+export async function addOrUpdateCart(userId: string, cart: ICartItem) {
   return set(ref(database, `carts/${userId}/${cart.id}`), cart);
 }
 
-export async function updateCart(userId: string, cart: ICartItem) {
-  return set(ref(database, `carts/${userId}/${cart.id}`), cart);
-}
-
-export async function deleteCartItem(userId: string, cartId: string) {
+export async function deleteCart(userId: string, cartId: string) {
   return remove(ref(database, `carts/${userId}/${cartId}`));
 }

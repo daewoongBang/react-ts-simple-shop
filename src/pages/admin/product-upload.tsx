@@ -4,7 +4,7 @@ import Input from 'components/common/Input';
 import Button from 'components/common/Button';
 
 import { uploadImage } from 'apis/uploader';
-import { createProduct } from 'apis/firebase';
+import useProducts from 'hooks/useProducts';
 
 interface Product {
   title: string;
@@ -28,6 +28,8 @@ const AdminProductUpload = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
 
+  const { addProduct } = useProducts();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
 
@@ -46,13 +48,18 @@ const AdminProductUpload = () => {
     if (image) {
       uploadImage(image)
         .then((url) => {
-          createProduct(product, url).then(() => {
-            setSuccessMessage('제품이 성공적으로 등록되었습니다.');
-            setTimeout(() => {
-              setSuccessMessage('');
-              setProduct(productInitialState);
-            }, 3000);
-          });
+          addProduct.mutate(
+            { product, url },
+            {
+              onSuccess: () => {
+                setSuccessMessage('제품이 성공적으로 등록되었습니다.');
+                setTimeout(() => {
+                  setSuccessMessage('');
+                  setProduct(productInitialState);
+                }, 3000);
+              },
+            }
+          );
         })
         .finally(() => {
           setIsUploading(false);

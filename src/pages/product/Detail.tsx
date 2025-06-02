@@ -5,13 +5,15 @@ import Select from 'components/common/Select';
 import { formatPrice } from 'util/format';
 import { Product, ICartItem } from 'types/product';
 import { useAuth } from 'context/AuthContext';
-import { addCart } from 'apis/firebase';
+import { useCart } from 'hooks/useCart';
 
 const ProductDetail = () => {
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const {
     product: { id, image, title, price, category, description, options },
   } = useLocation().state as { product: Product };
   const { user } = useAuth();
+  const { addOrUpdateCartItem } = useCart();
 
   const [selectedOption, setSelectedOption] = useState(
     options ? options?.[0] : ''
@@ -34,7 +36,14 @@ const ProductDetail = () => {
         quantity: 1,
       };
 
-      addCart(user.uid, cartItem);
+      addOrUpdateCartItem.mutate(cartItem, {
+        onSuccess: () => {
+          setSuccessMessage('장바구니에 추가되었습니다.');
+          setTimeout(() => {
+            setSuccessMessage('');
+          }, 3000);
+        },
+      });
     }
   };
 
@@ -71,6 +80,7 @@ const ProductDetail = () => {
             />
           </div>
 
+          {successMessage && <p className='my-2'>{successMessage}</p>}
           <Button onClick={handleAddCart}>장바구니에 추가</Button>
         </div>
       </section>

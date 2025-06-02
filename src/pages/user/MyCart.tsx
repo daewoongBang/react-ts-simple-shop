@@ -1,22 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
-import { getCart } from 'apis/firebase';
 import { useAuth } from 'context/AuthContext';
 import Loading from 'components/common/Loading';
 import CartItem from 'components/cart/Item';
 import PriceCard from 'components/cart/PriceCard';
 import { FaEquals } from 'react-icons/fa';
 import Button from 'components/common/Button';
+import { useCart } from 'hooks/useCart';
 
 const DELIVERY_FEE = 3000;
 
 const MyCart = () => {
   const { user } = useAuth();
-
-  const { isLoading, data: cartItems } = useQuery({
-    queryKey: ['carts'],
-    queryFn: () => getCart(user?.uid || ''),
-  });
+  const {
+    cartQuery: { isLoading, data: cartItems },
+  } = useCart();
 
   const totalPrice =
     cartItems?.reduce((prev, item) => {
